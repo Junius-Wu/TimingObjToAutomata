@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>chan appr[id], stop[id], go[id], leave[id];clock x;</declaration>
+  <template>
+    <name x="30" y="30">gate</name>
+    <declaration/>
+    <location id="id0" x="22" y="22">
+      <name x="30" y="30">free</name>
+    </location>
+    <location id="id1" x="22" y="22">
+      <name x="30" y="30">occ</name>
+    </location>
+    <init ref="id0"/>
+    <transition>
+      <source ref="id0"/>
+      <target ref="id1"/>
+      <label kind="guard" x="30" y="30">len == 0</label>
+      <label kind="synchronisation" x="30" y="30">appr[id]?</label>
+    </transition>
+    <transition>
+      <source ref="id1"/>
+      <target ref="id0"/>
+      <label kind="synchronisation" x="30" y="30">leave[id]?</label>
+    </transition>
+    <transition>
+      <source ref="id0"/>
+      <target ref="id1"/>
+      <label kind="guard" x="30" y="30">len &gt; 0</label>
+      <label kind="synchronisation" x="30" y="30">appr[id]?</label>
+    </transition>
+    <transition>
+      <source ref="id1"/>
+      <target ref="id0"/>
+      <label kind="synchronisation" x="30" y="30">leave[id]?</label>
+    </transition>
+  </template>
+  <template>
+    <name x="31" y="31">train</name>
+    <declaration/>
+    <location id="id2" x="31" y="31">
+      <name x="31" y="31">safe</name>
+    </location>
+    <location id="id3" x="31" y="31">
+      <name x="31" y="31">appr</name>
+    </location>
+    <location id="id4" x="31" y="31">
+      <name x="31" y="31">cross</name>
+    </location>
+    <location id="id5" x="31" y="31">
+      <name x="31" y="31">stop</name>
+    </location>
+    <location id="id6" x="31" y="31">
+      <name x="31" y="31">start</name>
+    </location>
+    <init ref="id2"/>
+    <transition>
+      <source ref="id2"/>
+      <target ref="id3"/>
+      <label kind="assignment" x="31" y="31">x=0</label>
+      <label kind="synchronisation" x="31" y="31">appr[id]!</label>
+    </transition>
+    <transition>
+      <source ref="id3"/>
+      <target ref="id4"/>
+      <label kind="assignment" x="31" y="31">x=0</label>
+    </transition>
+    <transition>
+      <source ref="id4"/>
+      <target ref="id2"/>
+      <label kind="synchronisation" x="31" y="31">leave[id]!</label>
+    </transition>
+    <transition>
+      <source ref="id2"/>
+      <target ref="id3"/>
+      <label kind="synchronisation" x="31" y="31">appr[id]!</label>
+    </transition>
+    <transition>
+      <source ref="id3"/>
+      <target ref="id5"/>
+      <label kind="synchronisation" x="31" y="31">stop[id]?</label>
+    </transition>
+    <transition>
+      <source ref="id5"/>
+      <target ref="id6"/>
+      <label kind="assignment" x="31" y="31">x=0</label>
+      <label kind="synchronisation" x="31" y="31">go[id]?</label>
+    </transition>
+    <transition>
+      <source ref="id6"/>
+      <target ref="id4"/>
+    </transition>
+    <transition>
+      <source ref="id4"/>
+      <target ref="id2"/>
+      <label kind="synchronisation" x="31" y="31">leave[id]!</label>
+    </transition>
+  </template>
+  <system>system train, gate;</system>
+</nta>
